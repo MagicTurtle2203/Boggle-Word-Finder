@@ -24,7 +24,7 @@ class WordChecker:
             stack.extend(temp_list)
         return False
 
-    def _get_adjacent(self, index: (int, int)) -> {(int, int)}:
+    def _get_adjacent(self, index: (int, int)) -> [(int, int)]:
         index_list = []
 
         for rdelta, cdelta in [(i, n) for i in range(-1, 2) for n in range(-1, 2) if i != 0 or n != 0]:
