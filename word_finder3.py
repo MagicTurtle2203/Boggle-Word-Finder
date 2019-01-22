@@ -17,14 +17,14 @@ class WordChecker:
                     return True
                 else:
                     if i < len(word) - 1:
-                        temp_list.extend((j, used | {j}, prefix + word[i]) for j in self.get_adjacent(curr)
+                        temp_list.extend((j, used | {j}, prefix + word[i]) for j in self._get_adjacent(curr)
                                          if j not in used and self.letter_dict[j] == word[i + 1])
                     else:
                         temp_list.append((curr, used | {curr}, prefix + word[i]))
             stack.extend(temp_list)
         return False
 
-    def get_adjacent(self, index: (int, int)) -> {(int, int)}:
+    def _get_adjacent(self, index: (int, int)) -> {(int, int)}:
         index_list = []
 
         for rdelta, cdelta in [(i, n) for i in range(-1, 2) for n in range(-1, 2) if i != 0 or n != 0]:
@@ -43,14 +43,14 @@ class WordChecker:
 
         return result_list
 
-    def _create_letter_dict(self):
+    def _create_letter_dict(self) -> dict:
         letter_dict = dict()
 
         for x in range(len(self.board)):
             for y in range(len(self.board[x])):
                 letter_dict[(x, y)] = self.board[x][y]
 
-        return dict(letter_dict)
+        return letter_dict
 
 
 if __name__ == '__main__':
