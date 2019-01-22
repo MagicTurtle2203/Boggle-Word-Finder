@@ -7,24 +7,21 @@ class WordChecker:
 
     def find_word(self, word: str) -> bool:
         stack = self._find_first_indexes(word[0])
-        word_index = 1
 
-        while stack:
-            curr, used, prefix = stack.pop()
-            if prefix == word:
-                return True
-            else:
-                stack_len = len(stack)
+        for i in range(1, len(word) + 1):
+            temp_list = []
+            while stack:
+                curr, used, prefix = stack.pop()
 
-                if word_index < len(word) - 1:
-                    stack.extend((j, used | {j}, prefix + word[word_index])
-                                 for j in self.get_adjacent(curr) if j not in used
-                                 and self.letter_dict[j] == word[word_index + 1])
+                if prefix == word:
+                    return True
                 else:
-                    stack.extend([(curr, used | {curr}, prefix + word[word_index])])
-
-                if stack_len < len(stack):
-                    word_index += 1
+                    if i < len(word) - 1:
+                        temp_list.extend((j, used | {j}, prefix + word[i]) for j in self.get_adjacent(curr)
+                                         if j not in used and self.letter_dict[j] == word[i + 1])
+                    else:
+                        temp_list.append((curr, used | {curr}, prefix + word[i]))
+            stack.extend(temp_list)
         return False
 
     def get_adjacent(self, index: (int, int)) -> {(int, int)}:
@@ -69,9 +66,9 @@ if __name__ == '__main__':
         ["I", "U", "A", "O"],
         ["A", "S", "R", "L"]]
 
-    # assert WordChecker(testBoard).find_word("RACE")
-    # assert WordChecker(testBoard1).find_word("BINGO")
-    # assert WordChecker(testBoard1).find_word("LINGO")
+    assert WordChecker(testBoard).find_word("RACE")
+    assert WordChecker(testBoard1).find_word("BINGO")
+    assert WordChecker(testBoard1).find_word("LINGO")
     assert WordChecker(testBoard1).find_word("ILNBIA")
     assert WordChecker(testBoard1).find_word("BUNGIE") is False
     assert WordChecker(testBoard1).find_word("BINS") is False
