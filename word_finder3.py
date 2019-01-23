@@ -8,7 +8,7 @@ class WordChecker:
     def find_word(self, word: str) -> bool:
         stack = self._find_first_indexes(word[0])
 
-        for i in range(0, len(word) + 1):
+        for i in range(len(word) + 1):
             temp_list = []
             while stack:
                 curr, used, prefix = stack.pop()
@@ -34,14 +34,7 @@ class WordChecker:
         return index_list
 
     def _find_first_indexes(self, letter: str) -> [((int, int), {(int, int)}, str)]:
-        result_list = []
-
-        for x in range(len(self.board)):
-            for y in range(len(self.board[x])):
-                if self.board[x][y] == letter:
-                    result_list.append(((x, y), {(x, y)}, letter))
-
-        return result_list
+        return [(k, {k}, letter) for k, v in self.letter_dict.items() if v == letter]
 
     def _create_letter_dict(self) -> dict:
         letter_dict = dict()
@@ -66,4 +59,11 @@ if __name__ == '__main__':
         ["I", "U", "A", "O"],
         ["A", "S", "R", "L"]]
 
+    assert WordChecker(testBoard).find_word("RACE")
+    assert WordChecker(testBoard1).find_word("BINGO")
+    assert WordChecker(testBoard1).find_word("LINGO")
+    assert WordChecker(testBoard1).find_word("ILNBIA")
+    assert WordChecker(testBoard1).find_word("BUNGIE") is False
+    assert WordChecker(testBoard1).find_word("BINS") is False
+    assert WordChecker(testBoard1).find_word("SINUS") is False
     assert WordChecker(testBoard).find_word("RSCAREIOYBAILNEA")
